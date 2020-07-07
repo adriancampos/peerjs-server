@@ -1,7 +1,11 @@
-import uuidv4 from "uuid/v4";
 import { IClient } from "./client";
 import { IMessage } from "./message";
 import { IMessageQueue, MessageQueue } from "./messageQueue";
+
+const TOKEN_OPTIONS = {
+  length: 8,
+  chars: '0123456789abcdefghijklmnopqrstuvwxyz'
+}
 
 export interface IRealm {
   getClientsIds(): string[];
@@ -69,9 +73,17 @@ export class Realm implements IRealm {
     this.messageQueues.delete(id);
   }
 
-  public generateClientId(generateClientId?: () => string): string {
+  private generateToken() {
+    var token = '';
+    for (var i = 0; i < TOKEN_OPTIONS.length; i++) {
+      token += TOKEN_OPTIONS.chars[Math.floor(Math.random() * TOKEN_OPTIONS.chars.length)];
+    }
+    return token;
+  }
+  
+  public generateClientId(generateClientId?: () => string): string {    
 
-    const generateId = generateClientId ? generateClientId : uuidv4;
+    const generateId = generateClientId ? generateClientId : generateToken;
 
     let clientId = generateId();
 

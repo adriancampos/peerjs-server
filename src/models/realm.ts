@@ -7,6 +7,14 @@ const TOKEN_OPTIONS = {
   chars: '0123456789abcdefghijklmnopqrstuvwxyz'
 }
 
+function generateToken() {
+    var token = '';
+    for (var i = 0; i < TOKEN_OPTIONS.length; i++) {
+      token += TOKEN_OPTIONS.chars[Math.floor(Math.random() * TOKEN_OPTIONS.chars.length)];
+    }
+    return token;
+}
+
 export interface IRealm {
   getClientsIds(): string[];
 
@@ -71,14 +79,6 @@ export class Realm implements IRealm {
 
   public clearMessageQueue(id: string): void {
     this.messageQueues.delete(id);
-  }
-
-  private generateToken() {
-    var token = '';
-    for (var i = 0; i < TOKEN_OPTIONS.length; i++) {
-      token += TOKEN_OPTIONS.chars[Math.floor(Math.random() * TOKEN_OPTIONS.chars.length)];
-    }
-    return token;
   }
   
   public generateClientId(generateClientId?: () => string): string {    
